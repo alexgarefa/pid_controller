@@ -15,6 +15,13 @@ struct PidController_s
             float kd;
         } gain;
 
+        struct
+        {
+            bool saturate;
+            float lower;
+            float upper;
+        } output;
+
     } config;
 
     struct
