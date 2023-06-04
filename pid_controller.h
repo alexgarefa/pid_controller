@@ -46,4 +46,4 @@ bool PidController_ConfigIntegrator(PidController_s *controller, const bool satu
 bool PidController_Update(PidController_s *controller, const float setpoint, const float feedback, const uint32_t cycle_time_ms, float *output);
 bool PidController_Flush(PidController_s *controller);
 
-#endif __PID_CONTROLLER_H__
+#endif // __PID_CONTROLLER_H__
