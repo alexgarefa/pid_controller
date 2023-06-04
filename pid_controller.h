@@ -16,6 +16,12 @@ struct PidController_s
         } gain;
 
     } config;
+
+    struct
+    {
+        float last_error;
+        float acumulated_error;
+    } context;
 };
 
 typedef struct PidController_s PidController_s;
