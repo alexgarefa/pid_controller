@@ -50,3 +50,9 @@ bool PidController_Update(PidController_s *controller, const float setpoint, con
 
     return true;
 }
+
+bool PidController_Flush(PidController_s *controller)
+{
+    controller->context.last_error = 0.0;
+    controller->context.acumulated_error = 0.0;
+}
