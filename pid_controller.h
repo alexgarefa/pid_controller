@@ -4,10 +4,24 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+struct PidController_s
+{
+    struct
+    {
+        struct
+        {
+            float kp;
+            float ki;
+            float kd;
+        } gain;
+
+    } config;
+};
 
 typedef struct PidController_s PidController_s;
 
 bool PidController_Init(PidController_s *controller);
+bool PidController_ConfigGains(PidController_s *controller, const float kp, const float ki, const float kd);
 bool PidController_Update(PidController_s *controller, const float setpoint, const float feedback, const uint32_t cycle_time_ms, float *output);
 
 #endif __PID_CONTROLLER_H__

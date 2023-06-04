@@ -8,6 +8,18 @@ bool PidController_Init(PidController_s *controller)
         return false;
     return true;
 }
+
+bool PidController_ConfigGains(PidController_s *controller, const float kp, const float ki, const float kd)
+{
+    if (controller == NULL)
+        return false;
+
+    controller->config.gain.kp = kp;
+    controller->config.gain.ki = ki;
+    controller->config.gain.kd = kd;
+    return true;
+}
+
 bool PidController_Update(PidController_s *controller, const float setpoint, const float feedback, const uint32_t cycle_time_ms, float *p_output)
 {
     if (controller == NULL || cycle_time_ms == 0U)
