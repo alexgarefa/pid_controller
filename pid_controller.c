@@ -13,6 +13,8 @@ bool PidController_Init(PidController_s *controller)
     controller->config.output.saturate = false;
     controller->config.output.lower = 0.0;
     controller->config.output.upper = 0.0;
+    controller->config.integrator.saturate = false;
+    controller->config.integrator.threshold = 0.0;
     controller->context.last_error;
     controller->context.acumulated_error;
     return true;
@@ -26,6 +28,16 @@ bool PidController_ConfigOutput(PidController_s *controller, const bool saturate
     controller->config.output.saturate = saturate;
     controller->config.output.upper = upper;
     controller->config.output.lower = lower;
+    return true;
+}
+
+bool PidController_ConfigIntegrator(PidController_s *controller, const bool saturate, const float threshold)
+{
+    if (controller == NULL)
+        return false;
+
+    controller->config.integrator.saturate = saturate;
+    controller->config.integrator.threshold = threshold;
     return true;
 }
 
@@ -49,6 +61,16 @@ bool PidController_Update(PidController_s *controller, const float setpoint, con
     const float TIME_DT = cycle_time_ms * 0.001;
     const float ERROR_DT = ERROR - controller->context.last_error;
     float error_sum = controller->context.acumulated_error + (ERROR * TIME_DT);
+
+    // SATURATE INTEGRATOR
+    if (controller->config.integrator.saturate)
+    {
+        if (error_sum > controller->config.integrator.threshold)
+            error_sum = controller->config.integrator.threshold;
+
+        if (error_sum < -controller->config.integrator.threshold)
+            error_sum = -controller->config.integrator.threshold;
+    }
 
     // CALCULATE OUTPUT
     float action_p = controller->config.gain.kp * ERROR;

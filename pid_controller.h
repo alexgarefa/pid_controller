@@ -22,6 +22,12 @@ struct PidController_s
             float upper;
         } output;
 
+        struct
+        {
+            bool saturate;
+            float threshold;
+        } integrator;
+
     } config;
 
     struct
@@ -35,6 +41,8 @@ typedef struct PidController_s PidController_s;
 
 bool PidController_Init(PidController_s *controller);
 bool PidController_ConfigGains(PidController_s *controller, const float kp, const float ki, const float kd);
+bool PidController_ConfigOutput(PidController_s *controller, const bool saturate, const float lower, const float upper);
+bool PidController_ConfigIntegrator(PidController_s *controller, const bool saturate, const float threshold);
 bool PidController_Update(PidController_s *controller, const float setpoint, const float feedback, const uint32_t cycle_time_ms, float *output);
 bool PidController_Flush(PidController_s *controller);
 
